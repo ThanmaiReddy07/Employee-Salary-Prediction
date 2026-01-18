@@ -47,14 +47,14 @@ Given employee details such as age, education, occupation, and work experience, 
 
 ## How to Run the Project
 1. Clone the repository
-```bash
-git clone https://github.com/ThanmaiReddy07/Employee-Salary-Prediction.git
-2. Install required libraries
-```bash
-pip install -r requirements.txt
-3. Run the streamit app
-```bash
-streamlit run app.py
+  bash
+  git clone https://github.com/ThanmaiReddy07/Employee-Salary-Prediction.git
+3. Install required libraries
+  bash
+  pip install -r requirements.txt
+3. Run the streamlit app
+  bash
+  streamlit run app.py
 
 ---
 
