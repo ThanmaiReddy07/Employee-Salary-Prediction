@@ -14,7 +14,7 @@ import joblib
 # -----------------------------
 # 1. Load dataset
 # -----------------------------
-data = pd.read_csv(r"C:\Users\THANMAI REDDY\Downloads\adult 3.csv")
+data = pd.read_csv(r"adult 3.csv")
 
 # -----------------------------
 # 2. Data Cleaning
@@ -111,3 +111,4 @@ plt.title("Income Class Distribution")
 plt.xlabel("Salary Class")
 plt.ylabel("Count")
 plt.show()
+
