@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import joblib
 
-# Load the trained model
+# Load trained pipeline (preprocessing + model)
 model = joblib.load("best_model.pkl")
 
 st.set_page_config(page_title="Employee Salary Classification", page_icon="💼", layout="centered")
@@ -10,31 +10,49 @@ st.set_page_config(page_title="Employee Salary Classification", page_icon="💼"
 st.title("💼 Employee Salary Classification App")
 st.markdown("Predict whether an employee earns >50K or ≤50K based on input features.")
 
-# Sidebar inputs (these must match your training feature columns)
+# Sidebar inputs
 st.sidebar.header("Input Employee Details")
 
-# ✨ Replace these fields with your dataset's actual input columns
-age = st.sidebar.slider("Age", 18, 65, 30)
-education = st.sidebar.selectbox("Education Level", [
-    "Bachelors", "Masters", "PhD", "HS-grad", "Assoc", "Some-college"
-])
-occupation = st.sidebar.selectbox("Job Role", [
-    "Tech-support", "Craft-repair", "Other-service", "Sales",
-    "Exec-managerial", "Prof-specialty", "Handlers-cleaners", "Machine-op-inspct",
-    "Adm-clerical", "Farming-fishing", "Transport-moving", "Priv-house-serv",
-    "Protective-serv", "Armed-Forces"
-])
+age = st.sidebar.slider("Age", 18, 75, 30)
+workclass = st.sidebar.selectbox("Workclass", ["Private", "Self-emp-not-inc", "Self-emp-inc", "Federal-gov",
+                                               "Local-gov", "State-gov", "Others"])
+marital_status = st.sidebar.selectbox("Marital Status", ["Married-civ-spouse", "Divorced", "Never-married",
+                                                         "Separated", "Widowed", "Married-spouse-absent"])
+occupation = st.sidebar.selectbox("Occupation", ["Tech-support", "Craft-repair", "Other-service", "Sales",
+                                                 "Exec-managerial", "Prof-specialty", "Handlers-cleaners",
+                                                 "Machine-op-inspct", "Adm-clerical", "Farming-fishing",
+                                                 "Transport-moving", "Priv-house-serv", "Protective-serv",
+                                                 "Armed-Forces", "Others"])
+relationship = st.sidebar.selectbox("Relationship", ["Wife", "Own-child", "Husband", "Not-in-family",
+                                                     "Other-relative", "Unmarried"])
+race = st.sidebar.selectbox("Race", ["White", "Black", "Asian-Pac-Islander", "Amer-Indian-Eskimo", "Other"])
+gender = st.sidebar.selectbox("Gender", ["Male", "Female"])
+native_country = st.sidebar.selectbox("Native Country", ["United-States", "India", "Mexico", "Philippines",
+                                                         "Germany", "Canada", "Others"])
 hours_per_week = st.sidebar.slider("Hours per week", 1, 80, 40)
-experience = st.sidebar.slider("Years of Experience", 0, 40, 5)
+capital_gain = st.sidebar.number_input("Capital Gain", min_value=0, value=0)
+educational_num = st.sidebar.slider("Educational Num", 5, 16, 10)
 
-# Build input DataFrame (⚠️ must match preprocessing of your training data)
+# Build input DataFrame
+capital_loss = st.sidebar.number_input("Capital Loss", min_value=0, value=0)
+fnlwgt = st.sidebar.number_input("Final Weight (fnlwgt)", min_value=0, value=100000)
+
 input_df = pd.DataFrame({
     'age': [age],
-    'education': [education],
+    'workclass': [workclass],
+    'marital-status': [marital_status],
     'occupation': [occupation],
+    'relationship': [relationship],
+    'race': [race],
+    'gender': [gender],
+    'native-country': [native_country],
     'hours-per-week': [hours_per_week],
-    'experience': [experience]
+    'capital-gain': [capital_gain],
+    'capital-loss': [capital_loss],
+    'educational-num': [educational_num],
+    'fnlwgt': [fnlwgt]
 })
+
 
 st.write("### 🔎 Input Data")
 st.write(input_df)
@@ -51,6 +69,10 @@ uploaded_file = st.file_uploader("Upload a CSV file for batch prediction", type=
 
 if uploaded_file is not None:
     batch_data = pd.read_csv(uploaded_file)
+
+    # Drop target column if present
+    batch_data = batch_data.drop(columns=['income'], errors='ignore')
+
     st.write("Uploaded data preview:", batch_data.head())
     batch_preds = model.predict(batch_data)
     batch_data['PredictedClass'] = batch_preds
@@ -59,3 +81,4 @@ if uploaded_file is not None:
     csv = batch_data.to_csv(index=False).encode('utf-8')
     st.download_button("Download Predictions CSV", csv, file_name='predicted_classes.csv', mime='text/csv')
 
+    batch_data = batch_data.drop(columns=['income'], errors='ignore')
