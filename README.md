@@ -59,8 +59,6 @@ Given employee details such as age, education, occupation, and work experience, 
 
 ## 🚀 How to Run the Project
 1. Clone the repository:
-   ## 🚀 How to Run the Project
-1. Clone the repository:
    ```bash
    git clone https://github.com/ThanmaiReddy07/Employee-Salary-Prediction.git
    cd Employee-Salary-Prediction
