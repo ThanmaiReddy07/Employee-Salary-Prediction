@@ -61,11 +61,10 @@ Given employee details such as age, education, occupation, and work experience, 
 1. Clone the repository:
    ```bash
    git clone https://github.com/ThanmaiReddy07/Employee-Salary-Prediction.git
-   cd Employee-Salary-Prediction
 
 2. Install required libraries:
    ```bash
-   pip install -r requirements.txtbash
+   pip install -r requirements.txt
 
 3. Run the Streamlit app:
    ```bash
